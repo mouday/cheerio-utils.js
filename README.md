@@ -2,6 +2,11 @@
 
 基于 `cheerio` 的几个工具方法
 
+- npm: [https://www.npmjs.com/package/cheerio-utils](https://www.npmjs.com/package/cheerio-utils)
+
+- github: [https://github.com/mouday/cheerio-utils.js](https://github.com/mouday/cheerio-utils.js)
+
+
 安装
 
 ```
