@@ -4,9 +4,9 @@ const cheerio = require('cheerio');
  *  替换图片链接
  * @param {*} html
  * @param {Object} image_mapping
- * @returns
+ * @returns {String}
  */
-function replaceImages(html, image_mapping) {
+function replaceImages(html, image_map) {
   const doc = cheerio.load(html, {
     xmlMode: true,
     decodeEntities: false,
@@ -16,8 +16,8 @@ function replaceImages(html, image_mapping) {
   doc('img').each(function (index, elem) {
     let src = doc(this).attr('src');
 
-    if (image_mapping[src]) {
-      doc(this).attr('src', image_mapping[src]);
+    if (image_map[src]) {
+      doc(this).attr('src', image_map[src]);
     }
   });
 
@@ -27,7 +27,7 @@ function replaceImages(html, image_mapping) {
 /**
  *  提取图片连接
  * @param {*} html
- * @returns
+ * @returns {String}
  */
 function extractImages(html) {
   const doc = cheerio.load(html, {
@@ -53,7 +53,7 @@ function extractImages(html) {
  * @param {Array} attrs
  * @returns {String}
  */
-function removeAttrs(html, remove_attrs = null) {
+function removeAttrs(html, remove_attrs = ['style']) {
   const doc = cheerio.load(html, {
     xmlMode: true,
     decodeEntities: false,
@@ -93,9 +93,29 @@ function removeBlankLabel(html, labels = ['p']) {
   return doc.xml();
 }
 
+/**
+ * 替换a标签为文本字符串
+ * @param {String} html
+ * @returns {String}
+ */
+function replaceAnchorLabel(html) {
+  const doc = cheerio.load(html, {
+    xmlMode: true,
+    decodeEntities: false,
+  });
+
+  doc('a').each(function (index, elem) {
+    doc(this).replaceWith(doc(this).text());
+    // console.log(doc(this).text());
+  });
+
+  return doc.xml();
+}
+
 module.exports = {
   replaceImages,
   extractImages,
   removeAttrs,
   removeBlankLabel,
+  replaceAnchorLabel,
 };

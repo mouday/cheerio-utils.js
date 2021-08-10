@@ -1,14 +1,18 @@
 {
   "name": "cheerio-utils",
-  "version": "1.0.1",
-  "description": "",
-  "main": "index.js",
+  "version": "1.0.3",
+  "description": "some function of cheerio utils",
+  "homepage": "https://github.com/mouday/cheerio-utils.js",
+  "main": "./dist/cheerio-utils.js",
   "scripts": {
     "build": "webpack"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "cheerio": "^1.0.0-rc.10"
   },

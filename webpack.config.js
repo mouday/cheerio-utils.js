@@ -8,16 +8,23 @@ module.exports = {
 
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
+    // publicPath: '/dist/',
     filename: 'cheerio-utils.js',
-    library: 'cheerio-utils', // 指定的就是你使用require时的模块名
+
+    // 不同的引入方式不同的名字
+    library: {
+      root: 'cheerioUtils',
+      amd: 'cheerio-utils',
+      commonjs: 'cheerio-utils',
+    },
     // CMD只能在 Node 环境执行，AMD 只能在浏览器端执行，UMD 同时支持两种执行环境
-    libraryTarget: 'umd', // 指定输出格式
-    umdNamedDefine: true, // 会对 UMD 的构建过程中的 AMD 模块进行命名。否则就使用匿名的 define
+    libraryTarget: 'umd',
+    // 会对 UMD 的构建过程中的 AMD 模块进行命名。否则就使用匿名的 define
+    umdNamedDefine: true,
   },
 
   externals: {
-    'cheerio': 'cheerio',
+    cheerio: 'cheerio',
   },
 
   module: {
@@ -25,6 +32,7 @@ module.exports = {
       {
         test: /.js$/,
         use: 'babel-loader',
+        exclude: /node_modules/,
       },
     ],
   },
