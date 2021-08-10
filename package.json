@@ -1,6 +1,6 @@
 {
   "name": "cheerio-utils",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "some function of cheerio utils",
   "homepage": "https://github.com/mouday/cheerio-utils.js",
   "main": "./dist/cheerio-utils.js",
