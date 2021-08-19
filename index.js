@@ -1,16 +1,37 @@
 const cheerio = require('cheerio');
 
 /**
+ * 通过html获取doc对象
+ * @param {*} html
+ * @returns
+ */
+function getDoc(html) {
+  return cheerio.load(html);
+}
+
+/**
+ * 将doc对象转html
+ * @param {*} doc
+ * @returns
+ */
+function toHtml(doc) {
+  // 将生成文本多余的标签去除
+  let html = doc.html();
+  console.log(html);
+
+  let pattern = /<html><head><\/head><body>([\s\S]*)<\/body><\/html>/;
+  let res = html.match(pattern);
+  return res[1];
+}
+
+/**
  *  替换图片链接
  * @param {*} html
  * @param {Object} image_mapping
  * @returns {String}
  */
 function replaceImages(html, image_map) {
-  const doc = cheerio.load(html, {
-    xmlMode: true,
-    decodeEntities: false,
-  });
+  const doc = getDoc(html);
 
   // each不等待promise
   doc('img').each(function (index, elem) {
@@ -21,7 +42,7 @@ function replaceImages(html, image_map) {
     }
   });
 
-  return doc.xml();
+  return toHtml(doc);
 }
 
 /**
@@ -30,10 +51,7 @@ function replaceImages(html, image_map) {
  * @returns {String}
  */
 function extractImages(html) {
-  const doc = cheerio.load(html, {
-    xmlMode: true,
-    decodeEntities: false,
-  });
+  const doc = getDoc(html);
 
   let images = [];
 
@@ -54,10 +72,7 @@ function extractImages(html) {
  * @returns {String}
  */
 function removeAttrs(html, remove_attrs = ['style']) {
-  const doc = cheerio.load(html, {
-    xmlMode: true,
-    decodeEntities: false,
-  });
+  const doc = getDoc(html);
 
   // 移除指定的属性
   if (remove_attrs) {
@@ -66,7 +81,7 @@ function removeAttrs(html, remove_attrs = ['style']) {
     }
   }
 
-  return doc.xml();
+  return toHtml(doc);
 }
 
 /**
@@ -76,10 +91,7 @@ function removeAttrs(html, remove_attrs = ['style']) {
  * @returns {String}
  */
 function removeBlankLabel(html, labels = ['p']) {
-  const doc = cheerio.load(html, {
-    xmlMode: true,
-    decodeEntities: false,
-  });
+  const doc = getDoc(html);
 
   // .children().length
   for (let label of labels) {
@@ -90,7 +102,7 @@ function removeBlankLabel(html, labels = ['p']) {
     });
   }
 
-  return doc.xml();
+  return toHtml(doc);
 }
 
 /**
@@ -99,17 +111,14 @@ function removeBlankLabel(html, labels = ['p']) {
  * @returns {String}
  */
 function replaceAnchorLabel(html) {
-  const doc = cheerio.load(html, {
-    xmlMode: true,
-    decodeEntities: false,
-  });
+  const doc = getDoc(html);
 
   doc('a').each(function (index, elem) {
     doc(this).replaceWith(doc(this).text());
     // console.log(doc(this).text());
   });
 
-  return doc.xml();
+  return toHtml(doc);
 }
 
 module.exports = {
@@ -118,4 +127,6 @@ module.exports = {
   removeAttrs,
   removeBlankLabel,
   replaceAnchorLabel,
+  getDoc,
+  toHtml,
 };
